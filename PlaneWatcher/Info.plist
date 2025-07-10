@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs your location to find planes flying overhead within 3km of your position.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>This app needs your location to find planes flying overhead within 3km of your position.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>opensky-network.org</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>TLSv1.0</string>
+            </dict>
+        </dict>
+    </dict>
+    <key>CFBundleIconFile</key>
+    <string>PlaneWatcher.icns</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
+
+
+</dict>
+</plist>
