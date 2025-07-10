@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		6675291B2E1FDF6D0069CE12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 667529012E1FDF690069CE12 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 667529082E1FDF690069CE12;
+			remoteInfo = PlaneWatcher;
+		};
+		667529252E1FDF6D0069CE12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 667529012E1FDF690069CE12 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 667529082E1FDF690069CE12;
+			remoteInfo = PlaneWatcher;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		667529092E1FDF6A0069CE12 /* PlaneWatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaneWatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6675291A2E1FDF6D0069CE12 /* PlaneWatcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaneWatcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		667529242E1FDF6D0069CE12 /* PlaneWatcherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaneWatcherUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		6675290B2E1FDF6A0069CE12 /* PlaneWatcher */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PlaneWatcher;
+			sourceTree = "<group>";
+		};
+		6675291D2E1FDF6D0069CE12 /* PlaneWatcherTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PlaneWatcherTests;
+			sourceTree = "<group>";
+		};
+		667529272E1FDF6D0069CE12 /* PlaneWatcherUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PlaneWatcherUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		667529062E1FDF690069CE12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529172E1FDF6D0069CE12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529212E1FDF6D0069CE12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		667529002E1FDF690069CE12 = {
+			isa = PBXGroup;
+			children = (
+				6675290B2E1FDF6A0069CE12 /* PlaneWatcher */,
+				6675291D2E1FDF6D0069CE12 /* PlaneWatcherTests */,
+				667529272E1FDF6D0069CE12 /* PlaneWatcherUITests */,
+				6675290A2E1FDF6A0069CE12 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6675290A2E1FDF6A0069CE12 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				667529092E1FDF6A0069CE12 /* PlaneWatcher.app */,
+				6675291A2E1FDF6D0069CE12 /* PlaneWatcherTests.xctest */,
+				667529242E1FDF6D0069CE12 /* PlaneWatcherUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		667529082E1FDF690069CE12 /* PlaneWatcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6675292E2E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcher" */;
+			buildPhases = (
+				667529052E1FDF690069CE12 /* Sources */,
+				667529062E1FDF690069CE12 /* Frameworks */,
+				667529072E1FDF690069CE12 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6675290B2E1FDF6A0069CE12 /* PlaneWatcher */,
+			);
+			name = PlaneWatcher;
+			packageProductDependencies = (
+			);
+			productName = PlaneWatcher;
+			productReference = 667529092E1FDF6A0069CE12 /* PlaneWatcher.app */;
+			productType = "com.apple.product-type.application";
+		};
+		667529192E1FDF6D0069CE12 /* PlaneWatcherTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 667529312E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcherTests" */;
+			buildPhases = (
+				667529162E1FDF6D0069CE12 /* Sources */,
+				667529172E1FDF6D0069CE12 /* Frameworks */,
+				667529182E1FDF6D0069CE12 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6675291C2E1FDF6D0069CE12 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6675291D2E1FDF6D0069CE12 /* PlaneWatcherTests */,
+			);
+			name = PlaneWatcherTests;
+			packageProductDependencies = (
+			);
+			productName = PlaneWatcherTests;
+			productReference = 6675291A2E1FDF6D0069CE12 /* PlaneWatcherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		667529232E1FDF6D0069CE12 /* PlaneWatcherUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 667529342E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcherUITests" */;
+			buildPhases = (
+				667529202E1FDF6D0069CE12 /* Sources */,
+				667529212E1FDF6D0069CE12 /* Frameworks */,
+				667529222E1FDF6D0069CE12 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				667529262E1FDF6D0069CE12 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				667529272E1FDF6D0069CE12 /* PlaneWatcherUITests */,
+			);
+			name = PlaneWatcherUITests;
+			packageProductDependencies = (
+			);
+			productName = PlaneWatcherUITests;
+			productReference = 667529242E1FDF6D0069CE12 /* PlaneWatcherUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		667529012E1FDF690069CE12 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					667529082E1FDF690069CE12 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					667529192E1FDF6D0069CE12 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 667529082E1FDF690069CE12;
+					};
+					667529232E1FDF6D0069CE12 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 667529082E1FDF690069CE12;
+					};
+				};
+			};
+			buildConfigurationList = 667529042E1FDF690069CE12 /* Build configuration list for PBXProject "PlaneWatcher" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 667529002E1FDF690069CE12;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 6675290A2E1FDF6A0069CE12 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				667529082E1FDF690069CE12 /* PlaneWatcher */,
+				667529192E1FDF6D0069CE12 /* PlaneWatcherTests */,
+				667529232E1FDF6D0069CE12 /* PlaneWatcherUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		667529072E1FDF690069CE12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529182E1FDF6D0069CE12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529222E1FDF6D0069CE12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		667529052E1FDF690069CE12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529162E1FDF6D0069CE12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		667529202E1FDF6D0069CE12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6675291C2E1FDF6D0069CE12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 667529082E1FDF690069CE12 /* PlaneWatcher */;
+			targetProxy = 6675291B2E1FDF6D0069CE12 /* PBXContainerItemProxy */;
+		};
+		667529262E1FDF6D0069CE12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 667529082E1FDF690069CE12 /* PlaneWatcher */;
+			targetProxy = 667529252E1FDF6D0069CE12 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6675292C2E1FDF6D0069CE12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6675292D2E1FDF6D0069CE12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		6675292F2E1FDF6D0069CE12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlaneWatcher/PlaneWatcher.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PlaneWatcher/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		667529302E1FDF6D0069CE12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlaneWatcher/PlaneWatcher.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PlaneWatcher/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		667529322E1FDF6D0069CE12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlaneWatcher.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PlaneWatcher";
+			};
+			name = Debug;
+		};
+		667529332E1FDF6D0069CE12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlaneWatcher.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PlaneWatcher";
+			};
+			name = Release;
+		};
+		667529352E1FDF6D0069CE12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcherUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PlaneWatcher;
+			};
+			name = Debug;
+		};
+		667529362E1FDF6D0069CE12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonhidalgo.PlaneWatcherUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PlaneWatcher;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		667529042E1FDF690069CE12 /* Build configuration list for PBXProject "PlaneWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6675292C2E1FDF6D0069CE12 /* Debug */,
+				6675292D2E1FDF6D0069CE12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6675292E2E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6675292F2E1FDF6D0069CE12 /* Debug */,
+				667529302E1FDF6D0069CE12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		667529312E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcherTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				667529322E1FDF6D0069CE12 /* Debug */,
+				667529332E1FDF6D0069CE12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		667529342E1FDF6D0069CE12 /* Build configuration list for PBXNativeTarget "PlaneWatcherUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				667529352E1FDF6D0069CE12 /* Debug */,
+				667529362E1FDF6D0069CE12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 667529012E1FDF690069CE12 /* Project object */;
+}
