@@ -7,10 +7,30 @@ struct PlaneWatcherMenuBarApp: App {
     @StateObject private var planeFetcher = PlaneFetcher()
 
     var body: some Scene {
-        MenuBarExtra("✈️ Planes", systemImage: "airplane") {
+        MenuBarExtra {
             PlaneMenuView(planeFetcher: planeFetcher)
+        } label: {
+            Label {
+                Text("Planes")
+            } icon: {
+                Image(systemName: "airplane")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(planeFetcher.nearbyPlanes.isEmpty ? Color.primary : Color.green)
+            }
         }
         .menuBarExtraStyle(.window)
+        
+        // Add window group for individual plane windows
+        WindowGroup("Plane Details", id: "planeDetails") {
+            ForEach(planeFetcher.nearbyPlanes.filter { planeFetcher.isWindowOpenForPlane($0) }, id: \.icao) { plane in
+                PlaneWindowView(plane: plane, planeFetcher: planeFetcher)
+                    .onDisappear {
+                        planeFetcher.closeWindowForPlane(plane)
+                    }
+            }
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
     }
 }
 
@@ -25,14 +45,27 @@ struct PlaneMenuView: View {
             controlsSection
             Divider()
             planesSection
+            Spacer(minLength: 0)
         }
         .padding()
-        .frame(width: 350, height: 450)
+        .frame(width: 350, height: menuHeight, alignment: .top)
         .onAppear {
             planeFetcher.startTimers()
         }
         .onReceive(planeFetcher.$isLoading) { loading in
             isRefreshing = loading
+        }
+        .onReceive(Timer.publish(every: 30, on: .main, in: .common).autoconnect()) { _ in
+            // Force refresh of flight history timestamps
+            planeFetcher.objectWillChange.send()
+        }
+    }
+    
+    private var menuHeight: CGFloat {
+        if planeFetcher.displaySettings.showFlightHistory && !planeFetcher.flightHistory.isEmpty {
+            return 550
+        } else {
+            return 370
         }
     }
     
@@ -97,20 +130,6 @@ struct PlaneMenuView: View {
                         .foregroundColor(.blue)
                 }
                 
-                Divider()
-                    .frame(height: 20)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Biggest Plane")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                    Text(planeFetcher.biggestPlaneToday ?? "None")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.green)
-                        .lineLimit(1)
-                }
-                
                 Spacer()
             }
             .padding(.horizontal, 4)
@@ -118,16 +137,50 @@ struct PlaneMenuView: View {
     }
     
     private var planesSection: some View {
-        ScrollView {
-            if planeFetcher.isLoading {
-                loadingView
-            } else if planeFetcher.nearbyPlanes.isEmpty {
-                emptyStateView
-            } else {
-                planesList
+        VStack(spacing: 0) {
+            ScrollView {
+                if planeFetcher.isLoading {
+                    loadingView
+                } else if planeFetcher.nearbyPlanes.isEmpty {
+                    emptyStateView
+                } else {
+                    planesList
+                }
+            }
+            .frame(maxHeight: 200)
+            
+            // Flight History Section
+            if planeFetcher.displaySettings.showFlightHistory && !planeFetcher.flightHistory.isEmpty {
+                Divider()
+                flightHistorySection
             }
         }
-        .frame(maxHeight: 300)
+    }
+    
+    private var flightHistorySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Recent Flights")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text("\(planeFetcher.flightHistory.count) total")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 8)
+            .padding(.top, 10)
+            
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 2) {
+                    ForEach(Array(planeFetcher.flightHistory.prefix(5)), id: \.id) { flight in
+                        FlightHistoryRowView(flight: flight)
+                    }
+                }
+            }
+            .frame(maxHeight: 120)
+        }
     }
     
     private var loadingView: some View {
@@ -183,8 +236,13 @@ struct PlaneRowView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(planeFetcher.getPlaneDescription(plane))
-                        .font(.system(size: 11, design: .monospaced))
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.primary)
+                        .lineLimit(1)
+                    
+                    Text(planeFetcher.getPlaneDetails(plane))
+                        .font(.system(size: 10))
+                        .foregroundColor(.secondary)
                         .lineLimit(1)
                     
                     if let route = plane.route {
@@ -219,6 +277,159 @@ struct PlaneRowView: View {
     }
 }
 
+struct PlaneWindowView: View {
+    let plane: Plane
+    let planeFetcher: PlaneFetcher
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            HStack {
+                Image(systemName: "airplane")
+                    .font(.title2)
+                    .foregroundColor(.blue)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(plane.callsign)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    if let route = plane.route {
+                        Text(route)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                Button("✕") {
+                    dismiss()
+                }
+                .buttonStyle(PlainButtonStyle())
+                .font(.title3)
+                .foregroundColor(.secondary)
+            }
+            
+            Divider()
+            
+            // Plane Details
+            VStack(alignment: .leading, spacing: 12) {
+                detailRow("ICAO", plane.icao)
+                detailRow("Altitude", "\(Int(Double(plane.altitude) * 3.28084)) ft")
+                if let speed = plane.speed {
+                    detailRow("Speed", "\(Int(speed * 3.6)) km/h")
+                }
+                if let distance = plane.distance {
+                    detailRow("Distance", "\(String(format: "%.1f", distance)) km")
+                }
+                if let aircraftType = planeFetcher.getAircraftTypeForDisplay(icao: plane.icao) {
+                    detailRow("Aircraft", aircraftType)
+                }
+            }
+            
+            Spacer()
+            
+            // Actions
+            HStack {
+                Button("View on Globe") {
+                    if let url = URL(string: "https://globe.adsbexchange.com/?icao=\(plane.icao)") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Spacer()
+                
+                Button("Close Window") {
+                    dismiss()
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+        .padding()
+        .frame(width: 300, height: 250)
+        .background(Color(NSColor.windowBackgroundColor))
+    }
+    
+    private func detailRow(_ label: String, _ value: String) -> some View {
+        HStack {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: 80, alignment: .leading)
+            
+            Text(value)
+                .font(.system(size: 12, design: .monospaced))
+                .fontWeight(.medium)
+            
+            Spacer()
+        }
+    }
+}
+
+struct FlightHistoryRowView: View {
+    let flight: FlightHistory
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "clock.arrow.circlepath")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: 16)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                HStack {
+                    Text(flight.callsign)
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
+                    
+                    if let aircraftType = flight.aircraftType {
+                        Text("[\(aircraftType)]")
+                            .font(.system(size: 9))
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+                
+                if let route = flight.route {
+                    Text(route)
+                        .font(.system(size: 9))
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            
+            Spacer()
+            
+            Text(formatTimeAgo(flight.timestamp))
+                .font(.system(size: 9))
+                .foregroundColor(.secondary)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+    }
+    
+    private func formatTimeAgo(_ date: Date) -> String {
+        let timeInterval = Date().timeIntervalSince(date)
+        
+        if timeInterval < 60 {
+            return "now"
+        } else if timeInterval < 3600 {
+            let minutes = Int(timeInterval / 60)
+            return "\(minutes)m ago"
+        } else if timeInterval < 86400 {
+            let hours = Int(timeInterval / 3600)
+            return "\(hours)h ago"
+        } else {
+            let days = Int(timeInterval / 86400)
+            return "\(days)d ago"
+        }
+    }
+}
+
 // MARK: - Model
 struct Plane: Identifiable, Codable {
     let id: String
@@ -246,6 +457,24 @@ struct Plane: Identifiable, Codable {
     }
 }
 
+struct FlightHistory: Identifiable, Codable {
+    let id: String
+    let callsign: String
+    let icao: String
+    let route: String?
+    let timestamp: Date
+    let aircraftType: String?
+    
+    init(callsign: String, icao: String, route: String?, aircraftType: String?) {
+        self.callsign = callsign
+        self.icao = icao
+        self.route = route
+        self.timestamp = Date()
+        self.aircraftType = aircraftType
+        self.id = "\(icao)_\(self.timestamp.timeIntervalSince1970)"
+    }
+}
+
 struct DisplaySettings: Codable {
     var showCallsign = true
     var showRoute = true
@@ -253,6 +482,8 @@ struct DisplaySettings: Codable {
     var showSpeed = true
     var showDistance = true
     var showAircraftType = true
+    var autoOpenWindows = true
+    var showFlightHistory = true
     var openSkyUsername = ""
     var openSkyPassword = ""
     var clientId = ""
@@ -324,6 +555,7 @@ struct SettingsPopoverView: View {
             Text("Settings")
                 .font(.headline)
                 .fontWeight(.semibold)
+                .padding(.top, 8)
             
             // Display Settings Section
             VStack(alignment: .leading, spacing: 8) {
@@ -337,6 +569,8 @@ struct SettingsPopoverView: View {
                 Toggle("Show altitude", isOn: $settings.showAltitude)
                 Toggle("Show speed", isOn: $settings.showSpeed)
                 Toggle("Show distance", isOn: $settings.showDistance)
+                Toggle("Auto-open windows for new planes", isOn: $settings.autoOpenWindows)
+                Toggle("Show flight history", isOn: $settings.showFlightHistory)
             }
             .font(.system(size: 12))
             
@@ -397,6 +631,7 @@ struct SettingsPopoverView: View {
             
             Spacer()
         }
+        .padding(.top, 4)
     }
 }
 
@@ -407,12 +642,18 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var displaySettings = DisplaySettings() {
         didSet {
             saveSettings()
+            // Restart timers if authentication changed
+            if oldValue.useBasicAuth != displaySettings.useBasicAuth || 
+               oldValue.useBearerToken != displaySettings.useBearerToken {
+                startTimers()
+            }
         }
     }
     @Published var isLoading: Bool = false
     @Published var todaysFlightCount: Int = 0
-    @Published var biggestPlaneToday: String? = nil
     @Published var currentLocationName: String = "Getting location..."
+    @Published var planesWithWindows: Set<String> = []
+    @Published var flightHistory: [FlightHistory] = []
 
     private let selectedRadius: Double = 3.0
     private var myLat: Double = 40.417
@@ -425,6 +666,7 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var seenICAOsToday: Set<String> = []
     private var lastResetDate: String = ""
     private var aircraftCache: [String: AircraftMetadata] = [:]
+    private var lastSeenPlanes: Set<String> = []
 
     override init() {
         super.init()
@@ -432,8 +674,15 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         loadSettings()
         loadDailyStats()
+        loadFlightHistory()
+        loadWindowState()
         currentLocationName = "Madrid"
         requestUserLocation()
+        
+        // Set initial timer value based on authentication
+        let interval = (displaySettings.useBasicAuth || displaySettings.useBearerToken) ? 10 : 60
+        secondsUntilNextPing = interval
+        
         startTimers()
     }
 
@@ -457,12 +706,10 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
         if lastResetDate != today {
             seenICAOsToday = []
             todaysFlightCount = 0
-            biggestPlaneToday = nil
             lastResetDate = today
             UserDefaults.standard.set(today, forKey: "lastResetDate")
         } else {
             todaysFlightCount = UserDefaults.standard.integer(forKey: "todaysFlightCount")
-            biggestPlaneToday = UserDefaults.standard.string(forKey: "biggestPlaneToday")
             if let seenData = UserDefaults.standard.data(forKey: "seenICAOsToday"),
                let seenSet = try? JSONDecoder().decode(Set<String>.self, from: seenData) {
                 seenICAOsToday = seenSet
@@ -470,9 +717,45 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
     
+    func loadFlightHistory() {
+        if let historyData = UserDefaults.standard.data(forKey: "flightHistory"),
+           let history = try? JSONDecoder().decode([FlightHistory].self, from: historyData) {
+            self.flightHistory = history.sorted { $0.timestamp > $1.timestamp }
+        }
+    }
+    
+    func saveFlightHistory() {
+        if let historyData = try? JSONEncoder().encode(flightHistory) {
+            UserDefaults.standard.set(historyData, forKey: "flightHistory")
+        }
+    }
+    
+    func clearFlightHistory() {
+        flightHistory.removeAll()
+        saveFlightHistory()
+    }
+    
+    private func addToFlightHistory(_ plane: Plane) {
+        let aircraftType = getAircraftTypeForDisplay(icao: plane.icao)
+        let flight = FlightHistory(
+            callsign: plane.callsign,
+            icao: plane.icao,
+            route: plane.route,
+            aircraftType: aircraftType
+        )
+        
+        flightHistory.insert(flight, at: 0)
+        
+        // Keep only the last 20 flights in memory
+        if flightHistory.count > 20 {
+            flightHistory = Array(flightHistory.prefix(20))
+        }
+        
+        saveFlightHistory()
+    }
+    
     func saveDailyStats() {
         UserDefaults.standard.set(todaysFlightCount, forKey: "todaysFlightCount")
-        UserDefaults.standard.set(biggestPlaneToday, forKey: "biggestPlaneToday")
         if let seenData = try? JSONEncoder().encode(seenICAOsToday) {
             UserDefaults.standard.set(seenData, forKey: "seenICAOsToday")
         }
@@ -564,10 +847,12 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
         timer?.invalidate()
         countdownTimer?.invalidate()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+        let interval = (displaySettings.useBasicAuth || displaySettings.useBearerToken) ? 10.0 : 60.0
+        
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             self?.fetchPlanes()
             DispatchQueue.main.async {
-                self?.secondsUntilNextPing = 60
+                self?.secondsUntilNextPing = Int(interval)
             }
         }
 
@@ -583,7 +868,64 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func manualRefresh() {
         fetchPlanes()
-        secondsUntilNextPing = 60
+        let interval = (displaySettings.useBasicAuth || displaySettings.useBearerToken) ? 10 : 60
+        secondsUntilNextPing = interval
+    }
+    
+    // MARK: - Window Management
+    func openWindowForPlane(_ plane: Plane) {
+        planesWithWindows.insert(plane.icao)
+        saveWindowState()
+    }
+    
+    func closeWindowForPlane(_ plane: Plane) {
+        planesWithWindows.remove(plane.icao)
+        saveWindowState()
+    }
+    
+    func isWindowOpenForPlane(_ plane: Plane) -> Bool {
+        return planesWithWindows.contains(plane.icao)
+    }
+    
+    private func saveWindowState() {
+        if let windowData = try? JSONEncoder().encode(planesWithWindows) {
+            UserDefaults.standard.set(windowData, forKey: "planesWithWindows")
+        }
+    }
+    
+    private func loadWindowState() {
+        if let windowData = UserDefaults.standard.data(forKey: "planesWithWindows"),
+           let windowSet = try? JSONDecoder().decode(Set<String>.self, from: windowData) {
+            planesWithWindows = windowSet
+        }
+    }
+    
+    private func managePlaneWindows(with newPlanes: [Plane]) {
+        let newICAOs = Set(newPlanes.map { $0.icao })
+        let currentICAOs = Set(nearbyPlanes.map { $0.icao })
+        
+        // Close windows for planes that are no longer nearby
+        let planesToClose = planesWithWindows.subtracting(newICAOs)
+        for icao in planesToClose {
+            planesWithWindows.remove(icao)
+        }
+        
+        // Open windows for new planes if auto-open is enabled
+        if displaySettings.autoOpenWindows {
+            let newPlanesToOpen = newICAOs.subtracting(currentICAOs)
+            for icao in newPlanesToOpen {
+                planesWithWindows.insert(icao)
+            }
+        }
+        
+        // Track newly seen planes for flight history
+        let newlySeenPlanes = newICAOs.subtracting(lastSeenPlanes)
+        for plane in newPlanes where newlySeenPlanes.contains(plane.icao) {
+            addToFlightHistory(plane)
+        }
+        
+        lastSeenPlanes = newICAOs
+        saveWindowState()
     }
     
     private func updateDailyStats(with planes: [Plane]) {
@@ -591,49 +933,12 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
             if !seenICAOsToday.contains(plane.icao) {
                 seenICAOsToday.insert(plane.icao)
                 todaysFlightCount += 1
-                
-                if let aircraftType = getAircraftTypeForDisplay(icao: plane.icao),
-                   let newBiggest = determineBiggestPlane(current: biggestPlaneToday, candidate: aircraftType) {
-                    biggestPlaneToday = newBiggest
-                }
             }
         }
         saveDailyStats()
     }
     
-    private func determineBiggestPlane(current: String?, candidate: String) -> String? {
-        let candidateUpper = candidate.uppercased()
-        
-        let bigPlaneTypes = [
-            "A380": 10, "A388": 10,
-            "B747": 9, "B748": 9, "B74F": 9,
-            "A350": 8, "A359": 8, "A35K": 8,
-            "B777": 7, "B77W": 7, "B77L": 7, "B789": 7,
-            "A340": 6, "A343": 6, "A346": 6,
-            "A330": 6, "A332": 6, "A333": 6,
-            "B787": 5, "B788": 5,
-            "B767": 4, "B763": 4, "B764": 4,
-            "A321": 3, "B757": 3,
-            "A320": 2, "B737": 1
-        ]
-        
-        let candidateType = bigPlaneTypes.keys.first { candidateUpper.contains($0) }
-        let currentType = bigPlaneTypes.keys.first { (current ?? "").uppercased().contains($0) }
-        
-        if let candidatePlane = candidateType {
-            if let currentPlane = currentType {
-                let candidatePriority = bigPlaneTypes[candidatePlane] ?? 0
-                let currentPriority = bigPlaneTypes[currentPlane] ?? 0
-                return candidatePriority > currentPriority ? candidate : current
-            } else {
-                return candidate
-            }
-        } else if let currentPlane = currentType {
-            return current
-        }
-        
-        return current ?? candidate
-    }
+
 
     private func boundingBox(centerLat: Double, centerLon: Double, radiusKm: Double) -> (lamin: Double, lomin: Double, lamax: Double, lomax: Double) {
         let latDelta = radiusKm / 111.0
@@ -828,6 +1133,7 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
                 DispatchQueue.main.asyncAfter(deadline: loadTime) {
                     self.nearbyPlanes = filtered.sorted { $0.distance ?? 0 < $1.distance ?? 0 }
                     self.updateDailyStats(with: filtered)
+                    self.managePlaneWindows(with: filtered) // Update window state after fetching
                     self.isLoading = false
                 }
                 
@@ -883,32 +1189,33 @@ class PlaneFetcher: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     func getPlaneDescription(_ plane: Plane) -> String {
+        return plane.callsign
+    }
+    
+    func getPlaneDetails(_ plane: Plane) -> String {
         var parts: [String] = []
 
-        if displaySettings.showCallsign {
-            parts.append(plane.callsign)
-        }
         if displaySettings.showAircraftType {
             if let aircraftType = getAircraftTypeForDisplay(icao: plane.icao) {
-                parts.append("[\(aircraftType)]")
+                parts.append(aircraftType)
             }
         }
         if displaySettings.showAltitude {
             let altitudeFt = Int(Double(plane.altitude) * 3.28084)
-            parts.append("\(altitudeFt)ft")
+            parts.append("\(altitudeFt) ft")
         }
         if displaySettings.showSpeed, let speed = plane.speed {
             let speedKmh = Int(speed * 3.6)
-            parts.append("\(speedKmh)km/h")
+            parts.append("\(speedKmh) km/h")
         }
         if displaySettings.showDistance, let dist = plane.distance {
-            parts.append("\(String(format: "%.1f", dist))km")
+            parts.append("\(String(format: "%.1f", dist)) km")
         }
 
         return parts.joined(separator: " • ")
     }
     
-    private func getAircraftTypeForDisplay(icao: String) -> String? {
+    func getAircraftTypeForDisplay(icao: String) -> String? {
         guard let metadata = aircraftCache[icao] else {
             return nil
         }
